@@ -1,10 +1,13 @@
+"use client";
+
 import { Button } from "./ui/button";
-import { Link, useLocation } from "react-router-dom";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 
 const Navigation = () => {
-  const location = useLocation();
+  const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems = [
@@ -16,8 +19,8 @@ const Navigation = () => {
   ];
 
   const isActivePath = (path: string) => {
-    if (path === "/" && location.pathname === "/") return true;
-    if (path !== "/" && location.pathname.startsWith(path)) return true;
+    if (path === "/" && pathname === "/") return true;
+    if (path !== "/" && pathname?.startsWith(path)) return true;
     return false;
   };
 
@@ -25,7 +28,7 @@ const Navigation = () => {
     <nav className="fixed top-0 z-50 w-full">
       <div className="container flex h-16 items-center justify-between px-4 py-4">
         {/* Logo */}
-        <Link to="/" className="flex items-center space-x-2">
+        <Link href="/" className="flex items-center space-x-2">
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-r from-primary to-purple-500 text-primary-foreground">
             <span className="text-lg font-bold">AS</span>
           </div>
@@ -37,7 +40,7 @@ const Navigation = () => {
             {navItems.map((item) => (
               <Link
                 key={item.path}
-                to={item.path}
+                href={item.path}
                 className={`rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 hover:bg-white/10 ${
                   isActivePath(item.path)
                     ? "bg-white/10 text-white"
@@ -53,7 +56,7 @@ const Navigation = () => {
         {/* Book a Call Button */}
         <div className="hidden md:flex">
           <Button asChild className="curved-element bg-white/10 hover:bg-white/20 text-white border-white/20">
-            <Link to="/contact">Book a Call</Link>
+            <Link href="/contact">Book a Call</Link>
           </Button>
         </div>
 
@@ -82,7 +85,7 @@ const Navigation = () => {
               {navItems.map((item) => (
                 <Link
                   key={item.path}
-                  to={item.path}
+                  href={item.path}
                   onClick={() => setIsMenuOpen(false)}
                   className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
                     isActivePath(item.path)
@@ -94,7 +97,7 @@ const Navigation = () => {
                 </Link>
               ))}
               <Link
-                to="/contact"
+                href="/contact"
                 onClick={() => setIsMenuOpen(false)}
                 className="mt-2 rounded-lg bg-white/10 px-3 py-2 text-center text-sm font-medium text-white hover:bg-white/20"
               >
